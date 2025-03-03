@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Enough Coin Flips Can Make LLMs Act Bayesian.">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Random Needles</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <!-- Load Plotly from CDN -->
+  <script src="https://cdn.plot.ly/plotly-3.0.0.min.js" charset="utf-8"></script>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">Enough Coin Flips Can Make LLMs Act Bayesian</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://ritwikgupta.me">Ritwik Gupta*</a>,
+              </span>
+              <span class="author-block">
+                <a href="https://rcorona.github.io/">Rodolfo Corona*</a>,
+              </span>
+              <span class="author-block">
+                <a href="https://jiaxin.ge/">Jiaxin Ge*</a>,
+              </span>
+              <br>
+              <span class="author-block">
+                <a href="https://www.linkedin.com/in/ericwang0533/">Eric Wang</a>,
+              </span>
+              <span class="author-block">
+                <a href="https://people.eecs.berkeley.edu/~klein/">Dan Klein</a>,
+              </span>
+              <span class="author-block">
+                <a href="https://people.eecs.berkeley.edu/~trevor/">Trevor Darrell</a>,
+              </span>
+              <span class="author-block">
+                <a href="https://dchan.cc/">David Chan</a>,
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Berkeley AI Research, UC Berkeley</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code and Models</span>
+                  </a>
+                </span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <img src="./static/images/updates.gif" height="100%"></img>
+      </div>
+      <h2 class="subtitle has-text-centered">
+        When LLMs are prompted to flip a biased coin (P(heads) = 60%), they are unable to do so without being shown
+        examples of flips from that distribution.
+        As the amount of biased coin flips shown to the LLM via in-context learning (ICL) increases, the LLMs converge
+        to the true distribution in a manner consistent with Bayesian updating.
+        In this case, the true Bayesian update converges to &theta;=0.70 which all LLMs also eventually converge to.
+      </h2>
+    </div>
+  </section>
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Large language models (LLMs) exhibit the ability to generalize given few-shot examples in their input
+              prompt, an emergent capability known as in-context learning (ICL). We investigate whether LLMs utilize ICL
+              to perform structured reasoning in ways that are consistent with a Bayesian framework or rely on pattern
+              matching. Using a controlled setting of biased coin flips, we find that: (1) LLMs often possess biased
+              priors, causing initial divergence in zero-shot settings, (2) in-context evidence outweighs explicit bias
+              instructions, (3) LLMs broadly follow Bayesian posterior updates, with deviations primarily due to
+              miscalibrated priors rather than flawed updates, and (4) attention magnitude has negligible effect on
+              Bayesian inference. With sufficient demonstrations of biased coin flips via ICL, LLMs update their priors
+              in a Bayesian manner.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+
+    </div>
+  </section>
+
+
+  <section class="section" id="interactive-plot">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Interactive Coin Flip ICL Visualization</h2>
+      <div class="field">
+        <label class="label">Select &theta;</label>
+        <div class="control">
+          <div class="select">
+            <select id="biasSelector">
+              <option value="0">0</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30" selected>30</option>
+              <option value="40">40</option>
+              <option value="50">50</option>
+              <option value="60">60</option>
+              <option value="70">70</option>
+              <option value="80">80</option>
+              <option value="90">90</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <!-- Div to hold the Plotly graph -->
+      <div id="plot" style="width:1200px; height:900px;"></div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@InProceedings{RandomNeedles_2025_arXiv,
+    author    = {Gupta, Ritwik and Corona, Rodolfo and Ge, Jiaxin and Wang, Eric and Klein, Dan and Darrell, Trevor and Chan, David},
+    title     = {Enough Coin Flips Can Make LLMs Act Bayesian},
+    booktitle = {arXiv},
+    month     = {March},
+    year      = {2025},
+}</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link" href="https://arxiv.org/abs/2212.14532">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://github.com/bair-climate-initiative/scale-mae/" class="external-link"
+          disabled>
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              This website came from the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies project website
+                template</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive Plot JavaScript -->
+  <script>
+    // Global variable to hold loaded figure data from data.json
+    let dataByBias = {};
+
+    function updatePlot(bias) {
+      const fig = dataByBias[bias];
+      if (!fig) {
+        console.error("No figure data available for bias:", bias);
+        return;
+      }
+      // Create the Plotly figure using the initial data and layout.
+      Plotly.newPlot('plot', fig.data, fig.layout).then(() => {
+        // Add animation frames (ICL values 0-100)
+        Plotly.addFrames('plot', fig.frames);
+      });
+    }
+
+    // Load data.json (must be served via HTTP, not file://)
+    fetch("./static/data/data.json")
+      .then(response => response.json())
+      .then(jsonData => {
+        dataByBias = jsonData;
+        const defaultBias = document.getElementById('biasSelector').value;
+        updatePlot(defaultBias);
+      })
+      .catch(error => console.error("Error loading data.json:", error));
+
+    // Listen for bias selection changes.
+    document.getElementById('biasSelector').addEventListener('change', function(e) {
+      updatePlot(e.target.value);
+    });
+  </script>
+
+</body>
+
+</html>
