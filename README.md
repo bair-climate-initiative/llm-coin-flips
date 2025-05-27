@@ -1,6 +1,6 @@
-# Scale-MAE
+# Enough Coin Flips Can Make LLMs Bayesian
 
-This is the repository that contains source code for the [Scale MAE website](TODO).
+This is the repository that contains source code for the website of the paper "[Enough Coin Flips Can Make LLMs Bayesian](https://arxiv.org/abs/2503.04722)".
 
 
 
